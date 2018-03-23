@@ -2,20 +2,20 @@ var WITH_AUDIO = false;
 var WITH_PUBLISH = false;
 
 
-function sendPostRequest(url, key, value) {
+function sendPostRequest(key, value) {
+
 
     var http = new XMLHttpRequest();
+    var url = "postmethod";
+    var params = String(key)+"="+String(value); // format "lorem=ipsum&name=binny"
 
-    // var url = "postmethod";
-    // var params = "lorem=ipsum&name=binny";
-    var params = String(key)+"="+String(value);
+    console.log(params);
 
     http.open("POST", url, true);
-
     //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-    // callback
+    // optional callback
     // http.onreadystatechange = function() {//Call a function when the state changes.
     //     if(http.readyState == 4 && http.status == 200) {
     //         console.log(http.responseText);

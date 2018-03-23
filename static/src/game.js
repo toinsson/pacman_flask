@@ -247,7 +247,7 @@ var getScore = function() {
 };
 
 var setScore = function(score) {
-    if (WITH_PUBLISH) {sendPostRequest("postmethod", "score", score);}
+    if (WITH_PUBLISH) {sendPostRequest("score", score);}
     scores[getScoreIndex()] = score;
 };
 

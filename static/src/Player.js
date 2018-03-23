@@ -87,7 +87,7 @@ Player.prototype.getAnimFrame = function(frame) {
             frame = 1; // hack to force this frame when dead
     }
     if (gameMode != GAME_OTTO) {
-        if (frame == 3) 
+        if (frame == 3)
             frame = 1;
     }
     return frame;
@@ -143,7 +143,7 @@ Player.prototype.step = (function(){
 
 // determine direction
 Player.prototype.steer = function() {
-
+    // console.log(this.dir);
     // if AI-controlled, only turn at mid-tile
     if (this.ai) {
         if (this.distToMid.x != 0 || this.distToMid.y != 0)
@@ -170,6 +170,17 @@ Player.prototype.steer = function() {
         var inputDirOpen = isNextTileFloor(this.tile, inputDir);
 
         if (inputDirOpen) {
+            if (!this.ai) {
+                var x = this.dir['x'];
+                var y = this.dir['y'];
+                this.setDir(this.inputDirEnum)
+
+                if ((x != this.dir['x']) || (y != this.dir['y'])) {
+                    // console.log("setDir: ", this.dir);
+                    if (WITH_PUBLISH) {sendPostRequest("dead", 1);}
+                }
+            }
+
             this.setDir(this.inputDirEnum);
             this.setNextDir(this.inputDirEnum);
             this.stopped = false;

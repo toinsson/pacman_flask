@@ -17,7 +17,7 @@
             });
         },
         exec: function(key, e) {
-            console.log('key '+key);
+            // console.log('key '+key);
             var keyListeners = this.listeners[key];
             if (!keyListeners) {
                 return;
@@ -56,7 +56,7 @@
     window.addEventListener("keydown", function(e) {
         var key = (e||window.event).keyCode;
 
-        console.log('window down '+key);
+        // console.log('window down '+key);
         // only execute at first press event
         if (!keyStates[key]) {
             keyStates[key] = true;
@@ -71,7 +71,7 @@
     window.addEventListener("keyup",function(e) {
         var key = (e||window.event).keyCode;
 
-        console.log('window up '+key);
+        // console.log('window up '+key);
 
         keyStates[key] = false;
         keyUpListeners.exec(key, e);

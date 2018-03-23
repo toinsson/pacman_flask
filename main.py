@@ -1,3 +1,5 @@
+from future.utils import viewitems
+
 import flask
 from flask import request, Response
 
@@ -12,10 +14,9 @@ class Publisher(object):
         super(Publisher, self).__init__()
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.PUB)
-        self.socket.bind("tcp://127.0.0.1:5557")
+        self.socket.bind("tcp://127.0.0.1:{}".format(port))
 
     def send_message(self, header, message):
-        # data = [header, message]
         self.socket.send_pyobj([header, message])
 
     def close(self):
@@ -32,12 +33,8 @@ def root():
 
 @app.route('/postmethod', methods = ['POST'])
 def get_post_javascript_data():
-    # do something with the data
-    # print(request.form)
 
-    pub.send_message('score', request.form['state'])
+    for k,v in viewitems(request.form.to_dict()):
+        pub.send_message(str(k), v)
 
     return Response('ok', mimetype='text/plain')
-
-
-# create a publisher for the JS data.
