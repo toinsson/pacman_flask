@@ -176,8 +176,7 @@ Player.prototype.steer = function() {
                 this.setDir(this.inputDirEnum)
 
                 if ((x != this.dir['x']) || (y != this.dir['y'])) {
-                    // console.log("setDir: ", this.dir);
-                    if (WITH_PUBLISH) {sendPostRequest("dead", 1);}
+                    if (WITH_PUBLISH) {sendPostRequest("dir", getEnumFromDir(this.dir));}
                 }
             }
 

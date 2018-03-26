@@ -41,13 +41,13 @@
     var keyUpListeners = new KeyEventListener();
 
     // key event listeners for control
-    var controlListeners = new KeyEventListener();
+    // var controlListeners = new KeyEventListener();
 
     // helper functions for adding custom key listeners
     var addKeyDown = function(key,callback,isActive) { keyDownListeners.add(key,callback,isActive); };
     var addKeyUp   = function(key,callback,isActive) { keyUpListeners.add(key,callback,isActive); };
 
-    var addControl   = function(key,callback,isActive) { controlListeners.add(key,callback,isActive); };
+    // var addControl   = function(key,callback,isActive) { controlListeners.add(key,callback,isActive); };
 
     // boolean states of each key
     var keyStates = {};
@@ -56,21 +56,24 @@
     window.addEventListener("keydown", function(e) {
         var key = (e||window.event).keyCode;
 
-        // console.log('window down '+key);
+
         // only execute at first press event
         if (!keyStates[key]) {
+            // console.log('window down '+key);
+            if (WITH_PUBLISH) {sendPostRequest("cmd_down", key);}
             keyStates[key] = true;
             keyDownListeners.exec(key, e);
         }
 
         // we want to keep pressing for the control
-        controlListeners.exec(key, e)
+        // controlListeners.exec(key, e)
 
 
     });
     window.addEventListener("keyup",function(e) {
         var key = (e||window.event).keyCode;
 
+        if (WITH_PUBLISH) {sendPostRequest("cmd_up", key);}
         // console.log('window up '+key);
 
         keyStates[key] = false;
