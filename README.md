@@ -5,3 +5,8 @@ It exposes some of the game states to a 0MQ publisher.
 To run:
 
 `FLASK_APP=main.py python -m flask run`
+
+Requirements:
+
+- flask
+- future
