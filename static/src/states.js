@@ -1241,7 +1241,18 @@ var readyNewState = newChildObject(readyState, {
     init: function() {
 
         // increment level and ready the next map
-        level++;
+        if (level == 0) {
+            level++;
+        }
+
+        if (WITH_LEVEL1) {
+            setScore(0)
+        }
+
+        if (!WITH_LEVEL1) {
+            level++;
+        }
+
         if (gameMode == GAME_PACMAN) {
             map = mapPacman;
         }

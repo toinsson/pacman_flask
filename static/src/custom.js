@@ -1,5 +1,6 @@
 var WITH_AUDIO = false;
 var WITH_PUBLISH = false;
+var WITH_LEVEL1 = true;
 
 
 function sendPostRequest(key, value) {
@@ -47,5 +48,11 @@ function custom_callback() {
     function button_publishCallback() {
         WITH_PUBLISH = this.control.checked;
         }
+
+    document.getElementById('button_level1').onclick = button_level1Callback;
+    function button_level1Callback() {
+        WITH_LEVEL1 = this.control.checked;
+        }
+
 };
 
