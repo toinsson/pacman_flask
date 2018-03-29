@@ -7,7 +7,6 @@ import json
 
 app = flask.Flask(__name__, static_url_path='')
 
-
 import zmq
 class Publisher(object):
     def __init__(self, port=8765):
@@ -26,6 +25,7 @@ class Publisher(object):
 
 # might need some configuration
 pub = Publisher()
+
 
 @app.route("/")
 def root():

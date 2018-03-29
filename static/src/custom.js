@@ -1,5 +1,5 @@
 var WITH_AUDIO = false;
-var WITH_PUBLISH = false;
+var WITH_PUBLISH = true;
 var WITH_LEVEL1 = true;
 
 

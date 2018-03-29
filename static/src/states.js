@@ -1162,7 +1162,7 @@ var newGameState = (function() {
 
     return {
         init: function() {
-            if (WITH_PUBLISH) {sendPostRequest("new game", 1);}
+            if (WITH_PUBLISH) {sendPostRequest("new_game", 1);}
             clearCheats();
             frames = 0;
             level = startLevel-1;
@@ -1244,14 +1244,14 @@ var readyNewState = newChildObject(readyState, {
         if (level == 0) {
             level++;
         }
+        if (!WITH_LEVEL1) {
+            level++;
+        }
 
         if (WITH_LEVEL1) {
             setScore(0)
         }
 
-        if (!WITH_LEVEL1) {
-            level++;
-        }
 
         if (gameMode == GAME_PACMAN) {
             map = mapPacman;
@@ -1298,7 +1298,7 @@ var readyRestartState = newChildObject(readyState, {
 
 var playState = {
     init: function() {
-        if (WITH_PUBLISH) {sendPostRequest("new life", 1);}
+        if (WITH_PUBLISH) {sendPostRequest("new_life", 1);}
         if (practiceMode) {
             vcr.reset();
         }
@@ -1516,7 +1516,7 @@ var deadState = (function() {
         triggers: {
             0: { // freeze
                 init: function() {
-                    if (WITH_PUBLISH) {sendPostRequest("dead", 1);}
+                    if (WITH_PUBLISH) {sendPostRequest("death", 1);}
                     audio.die.play();
                 },
                 update: function() {
@@ -1617,7 +1617,12 @@ var finishState = (function(){
             204: { draw: function() { flashFloorAndDraw(false); } },
             216: {
                 init: function() {
-                    if (!triggerCutsceneAtEndLevel()) {
+                    if (WITH_LEVEL1) {
+                        sendPostRequest("victory", 1);
+                        switchState(preNewGameState,60);
+                    }
+
+                    else if (!triggerCutsceneAtEndLevel()) {
                         switchState(readyNewState,60);
                     }
                 }
@@ -1634,7 +1639,10 @@ var overState = (function() {
     var frames;
     return {
         init: function() {
-            if (WITH_PUBLISH) {sendPostRequest("end game", 1);}
+            if (WITH_PUBLISH) {
+                sendPostRequest("defeat", 1);
+                // sendPostRequest("end_game", 1);
+            }
             frames = 0;
         },
         draw: function() {
@@ -1644,7 +1652,12 @@ var overState = (function() {
         },
         update: function() {
             if (frames == 120) {
-                switchState(homeState,60);
+                if (WITH_LEVEL1) {
+                    switchState(preNewGameState,60);
+                }
+                else {
+                    switchState(homeState,60);
+                }
             }
             else
                 frames++;
