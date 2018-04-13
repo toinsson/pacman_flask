@@ -25,16 +25,31 @@ class Publisher(object):
 
 # might need some configuration
 pub = Publisher()
+speedvalue = 1
 
 
 @app.route("/")
 def root():
     return app.send_static_file('debug.htm')
 
+
+@app.route('/speedvalue', methods = ['POST', 'GET'])
+def get_post_speedvalue():
+    global speedvalue
+
+    if request.method == 'GET':
+        return Response(str(speedvalue), mimetype='text/plain')
+
+    if request.method == 'POST':
+        speedvalue = request.form.to_dict()['speedvalue']
+        return Response('ok', mimetype='text/plain')
+
+
 @app.route('/postmethod', methods = ['POST'])
 def get_post_javascript_data():
-
     for k,v in viewitems(request.form.to_dict()):
         pub.send_message(str(k), v)
 
     return Response('ok', mimetype='text/plain')
+
+

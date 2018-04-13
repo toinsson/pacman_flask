@@ -1299,6 +1299,10 @@ var readyRestartState = newChildObject(readyState, {
 var playState = {
     init: function() {
         if (WITH_PUBLISH) {sendPostRequest("new_life", 1);}
+
+        // make FPS to tailored fraction
+        executive.setUpdatesPerSecond(speedvaluefunc(speedvalue));
+
         if (practiceMode) {
             vcr.reset();
         }
@@ -1389,7 +1393,9 @@ var playState = {
 
                     // finish level if all dots have been eaten
                     if (map.allDotsEaten()) {
-                        //this.draw();
+                        // make FPS back to normal
+                        executive.setUpdatesPerSecond(60);
+
                         switchState(finishState);
                         audio.extend.play();
                         break;
@@ -1517,6 +1523,10 @@ var deadState = (function() {
             0: { // freeze
                 init: function() {
                     if (WITH_PUBLISH) {sendPostRequest("death", 1);}
+
+                    // make FPS back to normal
+                    executive.setUpdatesPerSecond(60);
+
                     audio.die.play();
                 },
                 update: function() {

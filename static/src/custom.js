@@ -2,18 +2,28 @@ var WITH_AUDIO = false;
 var WITH_PUBLISH = true;
 var WITH_LEVEL1 = true;
 
+var speedvalue = 1;
+var speedvaluemapping = {0:120, 1:60, 2:40, 3:20, 4:15};
+
+function speedvaluefunc(val) {
+    return (80 - 20 * val)
+}
+
+
+function sendPostRequestUrl(url, key, value) {
+    var http = new XMLHttpRequest();
+    var params = String(key)+"="+String(value); // format "lorem=ipsum&name=binny"
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.send(params);
+}
+
 
 function sendPostRequest(key, value) {
-
-
     var http = new XMLHttpRequest();
     var url = "postmethod";
     var params = String(key)+"="+String(value); // format "lorem=ipsum&name=binny"
-
-    console.log(params);
-
     http.open("POST", url, true);
-    //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
     // optional callback
@@ -26,17 +36,44 @@ function sendPostRequest(key, value) {
 }
 
 
+function getSpeedValue() {
+    var http = new XMLHttpRequest();
+    var url = "speedvalue";
+    http.open("GET", url, true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+            var flaskvalue = parseFloat(http.responseText);
+            if (speedvalue != flaskvalue) {
+                speedvalue = flaskvalue;
+                executive.setUpdatesPerSecond(speedvaluefunc(speedvalue))
+                // executive.setUpdatesPerSecond(speedvaluemapping[speedvalue]);
+            }
+
+
+            // console.log(http.responseText);
+        }
+    }
+    http.send(null);
+}
+
+// check for upate on speedvalue from flask
+(function(){
+    getSpeedValue();
+    setTimeout(arguments.callee, 1000);  // check 1 FPS
+})();
+
+
 function custom_callback() {
 
     document.getElementById('speed').onclick = speedCallback;
     function speedCallback() {
-        console.log(document.getElementById('speed').value)
 
-        var value = document.getElementById('speed').value;
-        if (value == 1) {executive.setUpdatesPerSecond(60);}
-        if (value == 2) {executive.setUpdatesPerSecond(45);}
-        if (value == 3) {executive.setUpdatesPerSecond(30);}
-        if (value == 4) {executive.setUpdatesPerSecond(15);}
+        // manual change that has to be reflected: update the state in Flask
+        speedvalue = document.getElementById('speed').value;
+        sendPostRequestUrl('speedvalue', 'speedvalue', speedvalue);
+        executive.setUpdatesPerSecond(speedvaluemapping[speedvalue]);
     }
 
     document.getElementById('button_audio').onclick = button_audioCallback;
