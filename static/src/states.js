@@ -1296,6 +1296,8 @@ var readyRestartState = newChildObject(readyState, {
 // Play state
 // (state when playing the game)
 
+var lastStep = 0;
+
 var playState = {
     init: function() {
         if (WITH_PUBLISH) {sendPostRequest("new_life", 1);}
@@ -1381,6 +1383,19 @@ var playState = {
                 elroyTimer.update();
                 fruit.update();
                 energizer.update();
+
+
+                // publish the number of steps from pacman
+                // could be put in Player.js ...
+                if (WITH_PUBLISH) {
+
+                    // publish if new value and multiple of 10
+                    if ( ((pacman.steps % 10) == 0) && (pacman.steps != lastStep) ) {
+                        lastStep = pacman.steps;
+                        // console.log(pacman.steps);
+                        sendPostRequest("step", pacman.steps);
+                    }
+                }
 
                 // update actors one step at a time
                 for (j=0; j<maxSteps; j++) {

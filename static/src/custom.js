@@ -47,10 +47,12 @@ function getSpeedValue() {
             var flaskvalue = parseFloat(http.responseText);
 
             // only change in play state ?
-            if (speedvalue != flaskvalue) {
-                speedvalue = flaskvalue;
-                executive.setUpdatesPerSecond(speedvaluefunc(speedvalue))
-            }
+            // if (state == playState) {
+                if (speedvalue != flaskvalue) {
+                    speedvalue = flaskvalue;
+                    executive.setUpdatesPerSecond(speedvaluefunc(speedvalue))
+                }
+            // }
         }
     }
     http.send(null);
