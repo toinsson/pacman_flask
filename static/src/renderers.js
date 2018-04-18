@@ -94,7 +94,6 @@ var initRenderer = function(){
         var sy = (window.innerHeight - 10) / screenHeight;
         var s = Math.min(sx,sy);
         s *= getDevicePixelRatio();
-        console.log(sx,sy,s, screenWidth, screenHeight);
         return s;
     };
 
@@ -122,8 +121,6 @@ var initRenderer = function(){
         var x = Math.max(0,(window.innerWidth-10)/2 - w/2);
         var y = 0;
 
-        console.log(s,w,x,y);
-
         // canvas.style.position = "absolute";
         // canvas.style.left = x;
         // canvas.style.top = y;
@@ -137,9 +134,6 @@ var initRenderer = function(){
     bgCanvas = document.createElement('canvas');
     ctx = canvas.getContext("2d");
     bgCtx = bgCanvas.getContext("2d");
-
-    console.log(canvas);
-
 
     // initialize placement and size
     fullscreen();

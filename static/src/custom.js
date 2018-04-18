@@ -45,24 +45,23 @@ function getSpeedValue() {
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
             var flaskvalue = parseFloat(http.responseText);
+
+            // only change in play state ?
             if (speedvalue != flaskvalue) {
                 speedvalue = flaskvalue;
                 executive.setUpdatesPerSecond(speedvaluefunc(speedvalue))
-                // executive.setUpdatesPerSecond(speedvaluemapping[speedvalue]);
             }
-
-
-            // console.log(http.responseText);
         }
     }
     http.send(null);
 }
 
+
 // check for upate on speedvalue from flask
-(function(){
+setTimeout(function updateSpeedValue() {
     getSpeedValue();
-    setTimeout(arguments.callee, 1000);  // check 1 FPS
-})();
+    setTimeout(updateSpeedValue, 1000);
+}, 1000);
 
 
 function custom_callback() {
