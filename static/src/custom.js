@@ -2,12 +2,11 @@ var WITH_AUDIO = false;
 var WITH_PUBLISH = true;
 var WITH_LEVEL1 = true;
 
-var speedvalue = 1;
-var speedvaluemapping = {0:120, 1:60, 2:40, 3:20, 4:15};
-
-function speedvaluefunc(val) {
-    return (80 - 20 * val)
-}
+var speedvalue = 60;
+// var speedvaluemapping = {0:80, 1:60, 2:40, 3:20, 4:15};
+// function speedvaluefunc(val) {
+//     return (80 - 20 * val)
+// }
 
 
 function sendPostRequestUrl(url, key, value) {
@@ -48,11 +47,11 @@ function getSpeedValue() {
 
             // only change in play state ?
             // if (state == playState) {
-                if (speedvalue != flaskvalue) {
-                    speedvalue = flaskvalue;
-                    executive.setUpdatesPerSecond(speedvaluefunc(speedvalue))
-                }
-            // }
+            if (speedvalue != flaskvalue) {
+                speedvalue = flaskvalue;
+                executive.setUpdatesPerSecond(speedvalue);
+            }
+            document.getElementById("speed_fps").innerHTML = speedvalue;
         }
     }
     http.send(null);
@@ -74,7 +73,7 @@ function custom_callback() {
         // manual change that has to be reflected: update the state in Flask
         speedvalue = document.getElementById('speed').value;
         sendPostRequestUrl('speedvalue', 'speedvalue', speedvalue);
-        executive.setUpdatesPerSecond(speedvaluemapping[speedvalue]);
+        executive.setUpdatesPerSecond(speedvalue);
     }
 
     document.getElementById('button_audio').onclick = button_audioCallback;

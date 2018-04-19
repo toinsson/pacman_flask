@@ -1303,7 +1303,7 @@ var playState = {
         if (WITH_PUBLISH) {sendPostRequest("new_life", 1);}
 
         // make FPS to tailored fraction
-        executive.setUpdatesPerSecond(speedvaluefunc(speedvalue));
+        executive.setUpdatesPerSecond(speedvalue);
 
         if (practiceMode) {
             vcr.reset();
