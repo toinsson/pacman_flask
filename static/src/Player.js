@@ -199,6 +199,13 @@ Player.prototype.steer = function() {
 // update this frame
 Player.prototype.update = function(j) {
 
+    if (WITH_PUBLISH) {
+        if ((pacman.frames % 10) == 0) {
+            sendPostRequest("frame", this.frames);
+        }
+    }
+
+
     var numSteps = this.getNumSteps();
     if (j >= numSteps)
         return;
