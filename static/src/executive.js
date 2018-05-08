@@ -139,5 +139,8 @@ var executive = (function(){
         togglePause: function() { paused = !paused; },
         isPaused: function() { return paused; },
         getFps: function() { return fps; },
+
+        getGameTime: function() { return gameTime; },
+
     };
 })();
