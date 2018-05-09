@@ -9,6 +9,12 @@ var speedvalue = 60;
 // }
 
 
+function getFrameAndTime(){
+    var ret = "&frames="+String(pacman.frames)+"&gtime="+String(executive.getGameTime());
+    return ret;
+}
+
+
 function sendPostRequestUrl(url, key, value) {
     var http = new XMLHttpRequest();
     var params = String(key)+"="+String(value); // format "lorem=ipsum&name=binny"
@@ -18,12 +24,21 @@ function sendPostRequestUrl(url, key, value) {
 }
 
 
-function sendPostRequest(key, value) {
+function sendPostRequest(context) {
+
     var http = new XMLHttpRequest();
-    var url = "postmethod";
-    var params = String(key)+"="+String(value); // format "lorem=ipsum&name=binny"
-    http.open("POST", url, true);
+    http.open("POST", "postmethod", true);
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    var params;
+
+    // format "lorem=ipsum&name=binny" + frame and time for the game
+    if (context.value == undefined) {
+        params = "key="+String(context.key);
+    }
+    else {
+        params = "key="+String(context.key)+"&value="+String(context.value)+getFrameAndTime();
+    }
 
     // optional callback
     // http.onreadystatechange = function() {//Call a function when the state changes.
@@ -31,6 +46,7 @@ function sendPostRequest(key, value) {
     //         console.log(http.responseText);
     //     }
     // }
+
     http.send(params);
 }
 
@@ -57,12 +73,13 @@ function getSpeedValue() {
     http.send(null);
 }
 
-
+var TIMEOUT = 1000;
 // check for upate on speedvalue from flask
 setTimeout(function updateSpeedValue() {
     getSpeedValue();
-    setTimeout(updateSpeedValue, 1000);
-}, 1000);
+    setTimeout(updateSpeedValue, TIMEOUT);
+}, TIMEOUT);
+
 
 
 function custom_callback() {

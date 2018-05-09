@@ -176,7 +176,9 @@ Player.prototype.steer = function() {
                 this.setDir(this.inputDirEnum)
 
                 if ((x != this.dir['x']) || (y != this.dir['y'])) {
-                    if (WITH_PUBLISH) {sendPostRequest("dir", getEnumFromDir(this.dir));}
+                    if (WITH_PUBLISH) {
+                        sendPostRequest({key:"dir", value:getEnumFromDir(this.dir)});
+                    }
                 }
             }
 
@@ -199,11 +201,11 @@ Player.prototype.steer = function() {
 // update this frame
 Player.prototype.update = function(j) {
 
-    if (WITH_PUBLISH) {
-        if ((pacman.frames % 10) == 0) {
-            sendPostRequest("frame", this.frames);
-        }
-    }
+    // if (WITH_PUBLISH) {
+    //     if ((pacman.frames % 10) == 0) {
+    //         sendPostRequest("frame", this.frames);
+    //     }
+    // }
 
 
     var numSteps = this.getNumSteps();

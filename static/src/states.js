@@ -1162,7 +1162,7 @@ var newGameState = (function() {
 
     return {
         init: function() {
-            if (WITH_PUBLISH) {sendPostRequest("new_game", 1);}
+            if (WITH_PUBLISH) {sendPostRequest({key:"new_game"});}
             clearCheats();
             frames = 0;
             level = startLevel-1;
@@ -1300,7 +1300,7 @@ var lastStep = 0;
 
 var playState = {
     init: function() {
-        if (WITH_PUBLISH) {sendPostRequest("new_life", 1);}
+        if (WITH_PUBLISH) {sendPostRequest({key:"new_life"});}
 
         // make FPS to tailored fraction
         executive.setUpdatesPerSecond(speedvalue);
@@ -1393,7 +1393,7 @@ var playState = {
                     if ( ((pacman.steps % 10) == 0) && (pacman.steps != lastStep) ) {
                         lastStep = pacman.steps;
                         // console.log(pacman.steps);
-                        sendPostRequest("step", pacman.steps);
+                        sendPostRequest({key:"step", value:pacman.steps});
                     }
                 }
 
@@ -1537,7 +1537,7 @@ var deadState = (function() {
         triggers: {
             0: { // freeze
                 init: function() {
-                    if (WITH_PUBLISH) {sendPostRequest("death", 1);}
+                    if (WITH_PUBLISH) {sendPostRequest({key:"death"});}
 
                     // make FPS back to normal
                     executive.setUpdatesPerSecond(60);
@@ -1643,7 +1643,7 @@ var finishState = (function(){
             216: {
                 init: function() {
                     if (WITH_LEVEL1) {
-                        sendPostRequest("victory", 1);
+                        sendPostRequest({key:"victory"});
                         switchState(preNewGameState,60);
                     }
 
@@ -1664,10 +1664,7 @@ var overState = (function() {
     var frames;
     return {
         init: function() {
-            if (WITH_PUBLISH) {
-                sendPostRequest("defeat", 1);
-                // sendPostRequest("end_game", 1);
-            }
+            if (WITH_PUBLISH) { sendPostRequest({key:"defeat"}); }
             frames = 0;
         },
         draw: function() {

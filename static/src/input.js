@@ -60,7 +60,7 @@
         // only execute at first press event
         if (!keyStates[key]) {
             // console.log('window down '+key);
-            if (WITH_PUBLISH) {sendPostRequest("cmd_down", key);}
+            if (WITH_PUBLISH) {sendPostRequest({key:"cmd_down", value:key});}
             keyStates[key] = true;
             keyDownListeners.exec(key, e);
         }
@@ -73,7 +73,7 @@
     window.addEventListener("keyup",function(e) {
         var key = (e||window.event).keyCode;
 
-        if (WITH_PUBLISH) {sendPostRequest("cmd_up", key);}
+        if (WITH_PUBLISH) {sendPostRequest({key:"cmd_up", value:key});}
         // console.log('window up '+key);
 
         keyStates[key] = false;
